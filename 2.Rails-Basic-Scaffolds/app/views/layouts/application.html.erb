@@ -6,6 +6,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Setup Rails">
     <meta name="mobile-web-app-capable" content="yes">
+    
+    <%# add custom meta tags here %>
+    <meta name="description" content="A simple Rails application with basic scaffolds">
+    <meta name="keywords" content="rails, scaffold, tutorial, web development, ruby, javascript, html, css">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -18,11 +22,25 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
+
+
+    <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
+
+    <%# add Bulma CSS CDN here %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+
+
+
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
   </head>
 
   <body>
-    <%= yield %>
+    <%= render "layouts/partials/header" %>
+    <section class="section">
+      <div class="container">
+        <%= yield %>
+      </div>
+    </section>
   </body>
 </html>
