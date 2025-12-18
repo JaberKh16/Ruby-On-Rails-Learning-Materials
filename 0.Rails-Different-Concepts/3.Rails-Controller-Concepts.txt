@@ -1,0 +1,39 @@
+Rails Controller Based Concepts Learning
+========================================
+
+1. command to create a controller
+    $ rails g controller Products index --skip-routes
+
+2. base controller functions
+
+    class ProductsController < ApplicationController
+        def index
+            @products = Product.all  # rails used @instance to share the data among the views
+        end
+
+        def show
+            @product = Product.find(params[:id])
+        end
+    end
+
+    access the view => app/views/products/index.erb
+        <%# app/views/products/index.html.erb %>
+        <h1>Products</h1>
+        <div id="products">
+            <% @products.each do |product| %>
+                <div>
+                <%= product.name %>
+                </div>
+            <% end %>
+        </div>
+
+
+    class ProductsController < ApplicationController
+  def index
+    @products = Product.all
+  end
+
+  def show
+    @product = Product.find(params[:id])
+  end
+end

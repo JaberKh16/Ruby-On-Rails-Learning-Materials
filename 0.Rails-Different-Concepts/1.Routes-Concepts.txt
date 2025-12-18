@@ -1,8 +1,8 @@
-Rails Routing Concepts 
+Rails Routing Concepts
 =======================
 Route found will be found in the config/
 
-    - config/routes.rb 
+    - config/routes.rb
 
 Syntax:
     Rails.application.routes.draw do
@@ -11,18 +11,18 @@ Syntax:
 
 
 1. Root Route
-    - the route which will be hits when client hit on the domain 
+    - the route which will be hits when client hit on the domain
 
     root to: 'home#index'  # Controller: home_controller.rb, Function:index, View:app/views/home/index.html.erb
 
 2. Resources/Restful Routes
     - follows the restful(REST: Representational State Transfer) pattern by default
-    - Let's say, you want to have the posts resource 
+    - Let's say, you want to have the posts resource
 
-        resource :posts                         # single resources route 
+        resource :posts                         # single resources route
         resource :posts, :categories, :tags     # multiple resources routes
 
-    
+
     # GET   /posts -    posts#index -   display a list of all posts
     # GET   /posts/new -    posts#new - return an HTML form for creating a new posts
     # POST  /posts -    posts#create -  create a new posts
@@ -33,7 +33,7 @@ Syntax:
 
 
 3. Resource (RESTful but singular)
-    - Sometimes, you have a resource that clients always look up without referencing an ID. 
+    - Sometimes, you have a resource that clients always look up without referencing an ID.
       So intead of /profile/1 it can be just /profile
     - Rails controller actions would include: show, new, create, edit, update,destroy
 
@@ -46,13 +46,13 @@ Syntax:
     # DELETE    /profile - profiles#destroy -  delete the profile resource
 
 
-4. Namespacing 
+4. Namespacing
     - if want a specific path for a resource which contain inside a namespace
-    - use case: common for private or admin areas of an app where need more control over the 
+    - use case: common for private or admin areas of an app where need more control over the
       url schema
 
     Syntax:
-      namespace :admin do 
+      namespace :admin do
         resources :article
       end
 
@@ -65,7 +65,7 @@ Syntax:
         # PATCH/PUT     /admin/articles/:id - admin/articles#update -   admin_article_path(:id)
         # DELETE    /admin/articles/:id - admin/articles#destroy -  admin_article_path(:id)
 
-    - For even more organization you can add ruby modules to the mix to move your controller in the admin 
+    - For even more organization you can add ruby modules to the mix to move your controller in the admin
       space so your routing and controllers follow the same encapsulation patterns.
 
         Syntax:
@@ -78,7 +78,7 @@ Syntax:
             resources :articles, module: :admin
 
         Populated:
-            Your controller would then move to a module or in 
+            Your controller would then move to a module or in
                 app/controllers/admin/articles_controller.rb instead of just app/controllers/.
 
             Inside the controller you would write the class a bit differently to compensate
@@ -89,13 +89,13 @@ Syntax:
 
 
 
-5. Nesting Routes 
-    - Simply nest like you would with a ruby block. It's recommended to never nest 3 levels 
+5. Nesting Routes
+    - Simply nest like you would with a ruby block. It's recommended to never nest 3 levels
       deep although it's possible.
 
         Syntax:
             resources :categories
-                resources :posts 
+                resources :posts
             end
 
         Populated:
@@ -147,24 +147,24 @@ Syntax:
 
 
 6. Non Restful Routing
-    - definig manual with path or function defined 
+    - definig manual with path or function defined
         Syntax:
             http_verb 'uri' , to: 'controller#function'
         Example:
             get 'posts/index', to: 'posts#index'
-    
-5. Default Return Routes 
-    - when want some form of data to be return through the routes 
+
+5. Default Return Routes
+    - when want some form of data to be return through the routes
         Syntax:
             http_verb 'uri' , to: 'controller#function', defaults: { format: 'json' }
         Example:
             get 'posts/index', to: 'posts#index', defaults: { format: 'json' }
 
         Populated:
-            Here Rails would match users/1 to the show action of UsersController, and 
+            Here Rails would match users/1 to the show action of UsersController, and
             set params[:format] to json.
 
-6. Naming Routes 
+6. Naming Routes
     - naming routes are the route which can be named user wants irrespectively of controller or path(function)
       logic.
     - basically helps to rename the path you like rather than the rails defaults
@@ -173,5 +173,59 @@ Syntax:
             http_verb 'uri' , to: 'controller#function', as: 'name_route'
         Example:
             get 'posts/index', to: 'posts#index', as: 'index_post'
-        
-        
+
+
+
+    - another routes with manual post setup
+        Rails.application.routes.draw do
+            # ...
+            get "/products", to: "products#index"
+            post "/products", to: "products#create"
+            get "/products/:id", to: "products#show"
+        end
+
+
+    - routes may also need to match URLs with certain patterns
+        Rails.application.routes.draw do
+            # ...
+            get "/products/:id", to: "products#show"   # integer params
+            get "/blog/:title", to: "blog#show"        # string params
+        end
+
+
+Example Of CRUD Routes
+    1. Index - Shows all the records
+    2. New - Renders a form for creating a new record
+    3. Create - Processes the new form submission, handling errors and creating the record
+    4. Show - Renders a specific record for viewing
+    5. Edit - Renders a form for updating a specific record
+    6. Update (full) - Handles the edit form submission, handling errors and updating the entire
+       record, and typically triggered by a PUT request.
+    7. Update (partial) - Handles the edit form submission, handling errors and updating specific
+       attributes of the record, and typically triggered by a PATCH request.
+    8. Destroy - Handles deleting a specific record
+
+
+
+    Rails.application.routes.draw do
+        # ...
+        get "/products", to: "products#index"
+
+        get "/products/new", to: "products#new"
+        post "/products", to: "products#create"
+
+        get "/products/:id", to: "products#show"
+
+        get "/products/:id/edit", to: "products#edit"
+        patch "/products/:id", to: "products#update"
+        put "/products/:id", to: "products#update"
+
+        delete "/products/:id", to: "products#destroy"
+    end
+
+
+6. To see the routes
+    $ bin/rails routes   # list all the routes available
+
+7. Routes can also be check throgh the following way
+    localhost:3000/info/all/routes   # list can be seen from the browser
