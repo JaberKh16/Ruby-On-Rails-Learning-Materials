@@ -1,0 +1,64 @@
+ Rails Basic Installation Guide Materials
+ ========================================
+ a. Install Rails 
+    0. install ruby
+        $ sudo yum install ruby # to install ruby
+        $ ruby -v   # check the installed version
+    
+    1. dependancy installation
+        $ sudo dnf install -y \
+        gcc gcc-c++ make \
+        redhat-rpm-config \
+        ruby-devel \
+        sqlite sqlite-devel \
+        libyaml-devel \
+        libffi-devel \
+        openssl-devel \
+        zlib-devel \
+        readline-devel \
+        libcurl-devel \
+        ImageMagick ImageMagick-devel \
+        vips vips-devel \
+        nodejs \
+        yarn \
+    
+    2. setup rbenv package
+        $ git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+        $ cd ~/.rbenv && src/configure && make -C src
+        $ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+        $ echo 'eval "$(rbenv init - bash)"' >> ~/.bashrc
+        $ source ~/.bashrc
+        $ git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+        $ rbenv install -l
+        $ rbenv rehash
+
+    4. install the rail gems 
+        $ gem install rails --user-install
+
+    5. Add Gem into bashrc file
+        $ echo 'export GEM_HOME="$HOME/.gem"' >> ~/.bashrc
+          echo 'export PATH="$HOME/.gem/bin:$PATH"' >> ~/.bashrc
+          source ~/.bashrc
+        
+        $ gem -v
+        $ bundle env
+
+    6. install the bundler
+        $ gem install bundler
+        $ bunlder -v                # to check the version
+        $ gem update bundler        # to update the bundler
+        $ bundler clean --force     # to clean the bundler
+    6. install other dependancy gems 
+        $ gem install base64 date stringio
+
+
+ b. Rails Project Setup
+    1. to create a project 
+        $ rails new project_name  # project name must be without any number prefix with
+    2. to resolve the bundle issue locally
+        $ bundle config set --local path vendor/bundle
+        $ bundle install
+    3. to run the server 
+        $ rails s  # serve the PUMA webserver
+
+
