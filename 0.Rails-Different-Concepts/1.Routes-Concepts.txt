@@ -1,0 +1,177 @@
+Rails Routing Concepts 
+=======================
+Route found will be found in the config/
+
+    - config/routes.rb 
+
+Syntax:
+    Rails.application.routes.draw do
+        # all routes goes here
+    end
+
+
+1. Root Route
+    - the route which will be hits when client hit on the domain 
+
+    root to: 'home#index'  # Controller: home_controller.rb, Function:index, View:app/views/home/index.html.erb
+
+2. Resources/Restful Routes
+    - follows the restful(REST: Representational State Transfer) pattern by default
+    - Let's say, you want to have the posts resource 
+
+        resource :posts                         # single resources route 
+        resource :posts, :categories, :tags     # multiple resources routes
+
+    
+    # GET   /posts -    posts#index -   display a list of all posts
+    # GET   /posts/new -    posts#new - return an HTML form for creating a new posts
+    # POST  /posts -    posts#create -  create a new posts
+    # GET   /posts/:id -    posts#show -    display a specific posts
+    # GET   /posts/:id/edit -   posts#edit -    return an HTML form for editing a posts
+    # PATCH/PUT     /posts/:id -    posts#update -  update a specific posts
+    # DELETE    /posts/:id -    posts#destroy - delete a specific posts
+
+
+3. Resource (RESTful but singular)
+    - Sometimes, you have a resource that clients always look up without referencing an ID. 
+      So intead of /profile/1 it can be just /profile
+    - Rails controller actions would include: show, new, create, edit, update,destroy
+
+
+    # GET   /profile/new - profiles#new - return an HTML form for creating the profile
+    # POST  /profile - profiles#create - create the new profile
+    # GET   /profile - profiles#show - display the one and only profile resource
+    # GET   /profile/edit - profiles#edit - return an HTML form for editing the profile
+    # PATCH/PUT     /profile - profiles#update - update the one and only profile resource
+    # DELETE    /profile - profiles#destroy -  delete the profile resource
+
+
+4. Namespacing 
+    - if want a specific path for a resource which contain inside a namespace
+    - use case: common for private or admin areas of an app where need more control over the 
+      url schema
+
+    Syntax:
+      namespace :admin do 
+        resources :article
+      end
+
+    Populated:
+        # GET   /admin/articles - admin/articles#index -    admin_articles_path
+        # GET   /admin/articles/new - admin/articles#new -  new_admin_article_path
+        # POST  /admin/articles -   admin/articles#create - admin_articles_path
+        # GET   /admin/articles/:id -   admin/articles#show -   admin_article_path(:id)
+        # GET   /admin/articles/:id/edit -  admin/articles#edit -   edit_admin_article_path(:id)
+        # PATCH/PUT     /admin/articles/:id - admin/articles#update -   admin_article_path(:id)
+        # DELETE    /admin/articles/:id - admin/articles#destroy -  admin_article_path(:id)
+
+    - For even more organization you can add ruby modules to the mix to move your controller in the admin 
+      space so your routing and controllers follow the same encapsulation patterns.
+
+        Syntax:
+            scope module 'admin' do
+                resources :articles
+            end
+
+            # or
+
+            resources :articles, module: :admin
+
+        Populated:
+            Your controller would then move to a module or in 
+                app/controllers/admin/articles_controller.rb instead of just app/controllers/.
+
+            Inside the controller you would write the class a bit differently to compensate
+
+                Admin::ArticlesController < ApplicationController
+                   ...
+                end
+
+
+
+5. Nesting Routes 
+    - Simply nest like you would with a ruby block. It's recommended to never nest 3 levels 
+      deep although it's possible.
+
+        Syntax:
+            resources :categories
+                resources :posts 
+            end
+
+        Populated:
+            # GET /categories/:category_id/posts
+            # posts#index
+            # display a list of all posts for a specific category
+            # category_posts_path(@category) # requires an instance of Category
+
+            # ----
+
+            # GET /categories/:category_id/posts/new
+            # posts#new
+            # return an HTML form for creating a new post belonging to a specific category
+            # new_category_post_path(@category) # requires an instance of Category
+
+            # ----
+
+            # POST /categories/:category_id/posts
+            # posts#create
+            # create a new post belonging to a specific category
+
+            # ----
+
+            # GET /categories/:category_id/posts/:id
+            # posts#show
+            # display a specific post belonging to a specific category
+            # category_post_path(@category, @post) # requires an instance of Category and Post
+
+            # ----
+
+            # GET /categories/:category_id/posts/:id/edit
+            # posts#edit
+            # return an HTML form for editing an post belonging to a specific category
+            # edit_category_post_path(@category, @post) # requires an instance of Category and Post
+
+            # ----
+
+            # PATCH/PUT /categories/:category_id/posts/:id
+            # posts#update
+            # update a specific post belonging to a specific category
+
+            # ----
+
+            # DELETE /categories/:category_id/posts/:id
+            # posts#destroy
+            # delete a specific post belonging to a specific category
+            # category_post_path(@category, @post), method: :delete # requires an instance of Category and Post
+
+
+
+6. Non Restful Routing
+    - definig manual with path or function defined 
+        Syntax:
+            http_verb 'uri' , to: 'controller#function'
+        Example:
+            get 'posts/index', to: 'posts#index'
+    
+5. Default Return Routes 
+    - when want some form of data to be return through the routes 
+        Syntax:
+            http_verb 'uri' , to: 'controller#function', defaults: { format: 'json' }
+        Example:
+            get 'posts/index', to: 'posts#index', defaults: { format: 'json' }
+
+        Populated:
+            Here Rails would match users/1 to the show action of UsersController, and 
+            set params[:format] to json.
+
+6. Naming Routes 
+    - naming routes are the route which can be named user wants irrespectively of controller or path(function)
+      logic.
+    - basically helps to rename the path you like rather than the rails defaults
+
+        Syntax:
+            http_verb 'uri' , to: 'controller#function', as: 'name_route'
+        Example:
+            get 'posts/index', to: 'posts#index', as: 'index_post'
+        
+        
