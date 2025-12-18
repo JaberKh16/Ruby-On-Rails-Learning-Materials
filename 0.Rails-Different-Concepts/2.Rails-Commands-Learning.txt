@@ -1,11 +1,11 @@
 Rails Commands Learning Materials
 =================================
 
-1. To Create A Model 
-    
+1. To Create A Model
+
     $ bin/rails generate model Product name:string # Product Model with column:type
 
-    this command tells Rails to generate a model named Product which has a name column and 
+    this command tells Rails to generate a model named Product which has a name column and
     type of string in the database and creates this -
 
         invoke  active_record
@@ -36,31 +36,38 @@ Rails Commands Learning Materials
 
 
 2. Running The Migration
-    
+
     $ bin/rails db:migrate  # perform a migration
 
 3. Check Information In The Console
-    i. go to the console 
+    i. go to the console
 
         $ bin/rails console     # logged into:  store(dev)>
         store(dev)> Rails.version         # shows the version
         store(dev)> Product.column_names  # shows all columns name => ['col1', 'col2', ..., 'coln']
         store(dev)> product  = Product.new(name: 'XZYZ') # instantiated a product instance
         store(dev)> product.save # save into the database via .object.save which perform a trasaction of insert query in db
-        store(dev)> product.create(name: 'Draw') # perform a trasaction of insert query in db 
-        store(dev)> Product.all # Class.all perform a trasaction of select query in db 
+        store(dev)> product.create(name: 'Draw') # perform a trasaction of insert query in db
+        store(dev)> Product.all # Class.all perform a trasaction of select query in db
         store(dev)> Product.where(name: "Pants") # perform where condition
         store(dev)> Product.order(name: :asc) # perform ordering
-        store(dev)> Product.find(1) # find a record by id 
-        
+        store(dev)> Product.find(1) # find a record by id
+
         # find and update a record
         store(dev)> product = Product.find(1)
         store(dev)> product.update(name: "Shoes")
+        store(dev)> product.destroy   # perform the delete transaction
+
+        # to perform manual reload
+        store(dev)> reload!
 
 
-4. ActiveRecord Queries 
+
+
+
+4. ActiveRecord Queries
     1. object.save     # perform trasaction of insert
-    2. object.create() # perform transaction o insert 
+    2. object.create() # perform transaction o insert
     3. Class.all       # perform transaction of select
 
     Example:
@@ -85,18 +92,18 @@ Rails Commands Learning Materials
         store(dev)> product
         => #<Product:0x00000001221f6260 id: 1, name: "T-Shirt", created_at: "2024-11-09 16:35:01.117836000 +0000", updated_at: "2024-11-09 16:35:01.117836000 +0000">
 
-        
+
         # perform select query
         Product.all
         Product Load (0.1ms)  SELECT "products".* FROM "products" /* loading for pp */ LIMIT 11 /*application='Store'*/
         => [#<Product:0x0000000121845158 id: 1, name: "T-Shirt", created_at: "2024-11-09 16:35:01.117836000 +0000", updated_at: "2024-11-09 16:35:01.117836000 +0000">,
         #<Product:0x0000000121845018 id: 2, name: "Pants", created_at: "2024-11-09 16:36:01.856751000 +0000", updated_at: "2024-11-09 16:36:01.856751000 +0000">
 
-        # Filtering Records 
+        # Filtering Records
         store(dev)> Product.where(name: "Pants")
         Product Load (1.5ms)  SELECT "products".* FROM "products" WHERE "products"."name" = 'Pants' /* loading for pp */ LIMIT 11 /*application='Store'*/
         => [#<Product:0x000000012184d858 id: 2, name: "Pants", created_at: "2024-11-09 16:36:01.856751000 +0000", updated_at: "2024-11-09 16:36:01.856751000 +0000">]
-        
+
 
         # Ordering Records
         store(dev)> Product.order(name: :asc)
@@ -105,15 +112,42 @@ Rails Commands Learning Materials
         #<Product:0x0000000120e02948 id: 1, name: "T-Shirt", created_at: "2024-11-09 16:35:01.117836000 +0000", updated_at: "2024-11-09 16:35:01.117836000 +0000">]
 
 
-        # Find A Record By ID  
+        # Find A Record By ID
         store(dev)> Product.find(1)
         Product Load (0.2ms)  SELECT "products".* FROM "products" WHERE "products"."id" = 1 LIMIT 1 /*application='Store'*/
         => #<Product:0x000000012054af08 id: 1, name: "T-Shirt", created_at: "2024-11-09 16:35:01.117836000 +0000", updated_at: "2024-11-09 16:35:01.117836000 +0000">
 
-        # Perform A Update 
+        # Perform A Update
         store(dev)> product = Product.find(1)
         store(dev)> product.update(name: "Shoes")
         TRANSACTION (0.1ms)  BEGIN immediate TRANSACTION /*application='Store'*/
         Product Update (0.3ms)  UPDATE "products" SET "name" = 'Shoes', "updated_at" = '2024-11-09 22:38:19.638912' WHERE "products"."id" = 1 /*application='Store'*/
         TRANSACTION (0.4ms)  COMMIT TRANSACTION /*application='Store'*/
         => true
+
+        # Perform A Delete
+        store(dev)> product.destroy
+        TRANSACTION (0.1ms)  BEGIN immediate TRANSACTION /*application='Store'*/
+        Product Destroy (0.4ms)  DELETE FROM "products" WHERE "products"."id" = 1 /*application='Store'*/
+        TRANSACTION (0.1ms)  COMMIT TRANSACTION /*application='Store'*/
+        => #<Product:0x0000000125813d48 id: 1, name: "T-Shirt", created_at: "2024-11-09 22:39:38.498730000 +0000", updated_at: "2024-11-09 22:39:38.498730000 +0000">
+
+
+5. Model Based Action
+    1. validation
+        class Product < ActiveRecord
+            validates :name, presence:true   # set name as required field
+
+        after this performing this operation results -
+            store(dev)> product = Product.new
+            store(dev)> product.save
+            => false    # rails perform the handling automatically and return false
+
+        to check the validation error -
+            store(dev)> product.errors
+            => #<ActiveModel::Errors [#<ActiveModel::Error attribute=name, type=blank, options={}>]>
+            basically, this returns an ActiveModel::Errors object that can tell us exactly which errors are present.
+
+        to check the error as good message -
+            store(dev)> product.errors.full_messages
+            => ["Name can't be blank"]
