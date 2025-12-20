@@ -1,0 +1,12 @@
+Rails API Concepts Based Learning
+=================================
+
+1. To Create Rails API Based Project
+     
+     $ rails new project_name --api
+
+2. To Check For The Routes 
+     $ rails routes                # to look for all the routes 
+     $ rails routes | grep books   # using the grep linux fetch only the books related routes
+
+
