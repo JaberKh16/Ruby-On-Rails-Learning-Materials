@@ -7,7 +7,14 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   # creating a book route
-  resources :books, only: [:index, :create, :show, :edit, :update, :destroy]
- 
+  namespace :api do
+    namespace :v1 do 
+      # books routes
+      resources :books, only: [:index, :create, :show, :edit, :update, :destroy]
+
+      # archive routes
+      resources :archive, only: [:index, :create, :show, :edit, :update, :destroy]
+    end
+  end
 
 end
