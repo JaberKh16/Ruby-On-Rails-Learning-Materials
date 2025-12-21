@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_21_003908) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_21_102600) do
   create_table "archives", force: :cascade do |t|
     t.datetime "archive_date", null: false
     t.string "archive_type", null: false
@@ -19,6 +19,23 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_003908) do
     t.string "name", null: false
     t.datetime "updated_at", null: false
     t.index ["book_id"], name: "index_archives_on_book_id"
+  end
+
+  create_table "band_members", force: :cascade do |t|
+    t.integer "band_id", null: false
+    t.datetime "created_at", null: false
+    t.string "instrument"
+    t.string "name"
+    t.integer "no_of_member"
+    t.datetime "updated_at", null: false
+    t.index ["band_id"], name: "index_band_members_on_band_id"
+  end
+
+  create_table "bands", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "established_year"
+    t.string "name"
+    t.datetime "updated_at", null: false
   end
 
   create_table "books", force: :cascade do |t|
@@ -51,4 +68,5 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_003908) do
   end
 
   add_foreign_key "archives", "books"
+  add_foreign_key "band_members", "bands"
 end
