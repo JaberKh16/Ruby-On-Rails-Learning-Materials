@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   # creating a book route
   namespace :api do
-    namespace :v1 defaults: { format: :json } do 
+    namespace :v1 do 
       # books routes
       resources :books, only: [:index, :create, :show, :edit, :update, :destroy]
 
