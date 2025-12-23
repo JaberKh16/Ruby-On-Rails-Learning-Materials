@@ -1,0 +1,107 @@
+Rails Active Recrod Association Concepts
+========================================
+
+1. belongs_to
+    - denotes singular relation where one model is associate with other model 
+    - basically a one to one relation
+
+    class Book < ApplicationRecord
+        belongs_to : author
+
+        # here, Book model is associate with the Author model with one to one relation
+        # via 'author_id' in Book model 
+    end
+
+
+2. has_many 
+    - denotes plural concepts relation where one model is associate with other model in many associates
+    - basically a one to many relation
+
+    class Author < ApplicationRecord
+        has_many :books  # 'books' is the table name where it deonts it has many associates with Book model 
+
+        # here, Author model is associate with Book model with one to many relation via 'book_id' in Author model  
+    end
+
+
+3. has_one 
+    - only contains one instance of another model 
+    
+    class Supplier < ApplicationRecord
+        has_one :account
+
+        # Supplier model will only ever have a single account in this where Account model associate via 'supplier_id'
+
+    end 
+
+
+4. has_many_through
+    - denotes many to many relation
+    - basically is has_many: table, through :table
+
+    # app/models/physcian.rb
+    class Physician < ApplicationRecord
+        has_many :appointments 
+        has_many :patients,  through :appointments
+    end 
+
+
+    # app/models/appointment.rb
+    # appointments table will have both 'physcian_id' and the 'patient_id'
+    class Appointment < ApplicationRecord
+        belongs_to :physcian
+        belongs_to :patient
+    end
+
+    # app/models/patient.rb 
+    class Patient < ApplicationRecord
+        has_many :appointments 
+        has_many :physcians, through :appointments
+    end 
+
+
+5. has_one_through 
+    - denotes one to one connection with other model 
+
+    # app/models/supplier.rb 
+    class Supplier < ApplicationRecord
+        has_one :account
+        has_one :account_history, through :account 
+    end 
+
+
+    # app/models/account.rb 
+    # Supplier reference via 'supplier_id'
+    class Account < ApplicationRecord
+        belongs_to :supplier
+        has_one :account_history
+    end 
+
+
+    # app/models/account_history.rb 
+    # account_history reference via 'account_id'
+    class AccountHistory < ApplicationRecord
+        belongs_to :account
+    end 
+
+
+6. has_and_belongs_to_many 
+    - denotes direct many to many relation with other model without a third interviewing model.
+    - need to create a simple join table to use this association
+    - its limiting in terms of advance querying so use with caution 
+    - here the naming convention of join table - both model tables will take name as plural
+
+
+    # app/models/assembly.rb 
+    class Assembly < ApplicationRecord
+        has_and_belongs_to_many :parts 
+    end
+
+
+    # app/models/part.rb 
+    class Part < ApplicationRecord
+        has_and_belongs_to_many :assemblies
+    end 
+
+7. polymorphic relation
+
