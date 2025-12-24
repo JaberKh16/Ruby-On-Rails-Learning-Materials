@@ -6,34 +6,133 @@ Rails Controller Based Concepts Learning
 
 2. base controller functions
 
+    Prefix Verb   URI Pattern             Controller#Action
+    products GET    /products(.:format)     products#index
+    product GET    /products/:id(.:format) products#show
+
+
+    a. index function 
+
+    # app/controllers/product_controller.rb
     class ProductsController < ApplicationController
         def index
-            @products = Product.all  # rails used @instance to share the data among the views
+            @products = Product.all
         end
+    end
 
+
+    to see it in the view:
+
+    <%# app/views/products/index.html.erb %>
+    <%= debug @products %>    # debug prints the @products info in YAML format
+
+
+    b. show function in controller
+
+    class ProductsController < ApplicationController
         def show
             @product = Product.find(params[:id])
         end
     end
 
-    access the view => app/views/products/index.erb
-        <%# app/views/products/index.html.erb %>
+    in view:
+        <%# app/views/products/show.html.erb %>
+        <h1><%= @product.name %></h1>
+        <%= link_to "Back", products_path %>
+
+    Note: 1. link_to    # to make it linkable 
+          2. 
+
+
+    c. new function 
+
+    class ProductsController < ApplicationController
+        # used to link to the form with the model 
+        def new
+            @product = Product.new
+        end
+    end
+
+    in view:
         <h1>Products</h1>
+        <%= link_to "New product", new_product_path %>
         <div id="products">
-            <% @products.each do |product| %>
-                <div>
-                <%= product.name %>
-                </div>
-            <% end %>
+        <% @products.each do |product| %>
+            <div>
+            <%= link_to product.name, product_path(product.id) %>
+            </div>
+        <% end %>
         </div>
 
 
-    class ProductsController < ApplicationController
-  def index
-    @products = Product.all
-  end
 
-  def show
-    @product = Product.find(params[:id])
-  end
-end
+    d. create function
+    
+    class ProductsController < ApplicationController
+        def create
+            @product = Product.new(product_params)
+            if @product.save
+                redirect_to @product
+            else
+                render :new, status: :unprocessable_entity
+            end
+        end
+
+     private
+        def product_params
+            params.expect(product: [ :name ])
+        end
+
+    in view: 
+
+        <h1>New product</h1>
+        <%= form_with model: @product do |form| %>
+            <div>
+                <%= form.label :name %>
+                <%= form.text_field :name %>
+            </div>
+
+            <div>
+                <%= form.submit %>
+            </div>
+        <% end %>
+        <%= link_to "Cancel", products_path %>
+
+     
+    e. edit and update function
+    
+    class ProductsController < ApplicationController
+        def edit
+            @product = Product.find(params[:id])
+        end
+
+        def update
+            @product = Product.find(params[:id])
+            if @product.update(product_params)
+            redirect_to @product
+            else
+            render :edit, status: :unprocessable_entity
+            end
+        end
+    end
+
+
+    in view:
+    <%# app/views/products/_form.html.erb %>
+    <%= form_with model: product do |form| %>
+    <% if form.object.errors.any? %>
+        <p class="error"><%= form.object.errors.full_messages.first %></p>
+    <% end %>
+
+    <div>
+        <%= form.label :name %>
+        <%= form.text_field :name %>
+    </div>
+
+    <div>
+        <%= form.submit %>
+    </div>
+    <% end %>
+
+
+

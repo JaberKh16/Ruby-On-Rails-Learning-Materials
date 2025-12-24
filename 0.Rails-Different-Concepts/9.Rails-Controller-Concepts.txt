@@ -1,0 +1,17 @@
+Rails Controller Based Learning Concepts
+========================================
+Rails provides controller based approach where it has the following functions
+
+# app/controllers/product_controller.rb
+class ProductsController < ApplicationController
+  def index
+    @products = Product.all
+  end
+end
+
+
+to see it in the view:
+
+    <%# app/views/products/index.html.erb %>
+    <%= debug @products %>    # debug prints the @products info in YAML format
+
