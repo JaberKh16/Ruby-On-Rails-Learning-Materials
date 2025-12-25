@@ -55,5 +55,9 @@ gem "devise", "~> 4.9"
 # devise-jwt => https://github.com/waiting-for-dev/devise-jwt
 gem "devise-jwt", "~> 0.12.1"
 
-
+# rack-cors => 
 gem "rack-cors", "~> 3.0"
+
+
+# json-api-serializer => https://github.com/jsonapi-serializer/jsonapi-serializer
+gem 'jsonapi-serializer'
