@@ -84,4 +84,14 @@ class Api::V1::TodosController < ApplicationController
   def todo_params
     params.require(:todo).permit(:title, :description, :completed)
   end
+
+  # get /api/v1/todos/find_user_todos
+  def find_specific_user_todos
+    @todo = Todo.find_by(user_id: params[:user_id])
+    return if @todo.present?
+    render json: {
+      message: "Todo not found",
+      errors: ["Invalid todo user_id"]
+    }, status: :not_found
+  end
 end
