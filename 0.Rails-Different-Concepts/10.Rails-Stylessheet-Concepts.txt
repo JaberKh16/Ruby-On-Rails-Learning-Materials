@@ -1,0 +1,165 @@
+RUBY ON RAILS STYLESHEET FILE FORMAT
+====================================
+
+Add Via Rails Templating Setup
+------------------------------
+- its the way of creating template based rails setup for different css framework
+- available setups are:
+  
+    $ rails new application_name --css=bootsrtap   # for bootstrap setup
+    $ rails new application_name --css=tailwind    # for tailwind setup
+    $ rails new application_name --css=postcss     # for postcss setup
+
+
+
+
+Add Via Asset Pipeling
+-----------------------
+- concepts rails internal pipelining of styles and js files 
+- loading of the styles happends via Rails Asset Pipeling
+  
+  In view loaders:
+    
+        <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+
+
+a. PROJECT DIRECTORY STRUCTURE
+
+my_app/
+│
+├── app/
+│   ├── assets/
+│   │   └── stylesheets/
+│   │       ├── application.scss
+│   │       ├── users.scss
+│   │       ├── posts.scss
+│   │       └── shared/
+│   │           └── navbar.scss
+│   │
+│   └── views/
+│       └── layouts/
+│           └── application.html.erb
+
+FILE 1: application.scss
+Path:
+app/assets/stylesheets/application.scss
+
+/*
+  Main Stylesheet File
+  All other SCSS files are imported here
+*/
+
+@import "users";
+@import "posts";
+@import "shared/navbar";
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+FILE 2: users.scss
+Path:
+app/assets/stylesheets/users.scss
+
+/* Styles for Users pages */
+
+.users-title {
+  font-size: 24px;
+  color: #2c3e50;
+}
+
+.user-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+
+Add Via Direct Stylesheet Added 
+-------------------------------
+- directly added the style files into the application/assets/stylesheets/application.css
+- create a css file - user.css and add the file to template base file via 
+    <%= stylesheet_link_tag 'file_name'  %>   # loading via adding the stylesheet to the template
+
+
+
+Add Via Public Folder Setup
+---------------------------
+- way of adding the necessary styles or scripts file into the public/ directory
+- setup structure
+    public/
+        - css/styles.css
+        - js/script.js
+
+
+
+
+Add Via Gems Setup
+------------------
+
+a. Setup tailwind 
+    
+    # add necessary gems
+    $ bundle add tailwindcss-rails
+    $ rails tailwindcss:install
+
+    # create a file 
+    app/assets/stylesheets/application.tailwind.css
+
+
+    # import tailwind setup
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+
+    # use tailwind in views
+    <h1 class="text-3xl font-bold text-blue-600">
+      Welcome to Rails 8.1
+    </h1>
+
+
+b.Setup Bootstrap
+  
+  # add necessary gems
+  $ bundle add bootstrap
+  $ bundle add sassc-rails
+
+  # rename setup
+  app/assets/stylesheets/application.css --> application.scss
+
+  # import bootstrap
+  @import bootstrap    # in application.scss
+
+  # import other files
+  Bootstrap JS works automatically with import maps or jsbundling
+
+  # use in view
+  <button class="btn btn-warning">
+    click me
+  </button>
+
+
+c. Setup SCSS(Plain No Framework)
+  
+  # add necessary gems
+  bundle add sassc-rails
+
+  # rename setup
+  app/assets/stylesheets/application.css --> application.scss
+  
+  # organize styles
+  app/assets/stylesheets/
+  |-- application.scss
+  |-- user.scss
+  |-- posts.scss
+
+  # import the files
+  @import "user"
+  @import "posts"
+
+  
+
