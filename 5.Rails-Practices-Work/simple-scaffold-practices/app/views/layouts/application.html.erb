@@ -20,6 +20,8 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+
     <%# javascript_importmap_tags %>
 
 
@@ -31,6 +33,7 @@
     <%# include external css %>
     <%= stylesheet_link_tag 'contact.css' %>
 
+
     <%# include bulma stylesheet %>
     <%#= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css',  "data-turbo-track": "reload" %>
   </head>
@@ -40,9 +43,9 @@
       <%# render navigation navbar %> 
       <%= render 'layouts/partials/navbar' %>
       
-          <%= yield %>
-        
+      <%= yield %>
 
+      <%= render 'layouts/partials/footer' %>
     </head>
   </body>
 </html>
