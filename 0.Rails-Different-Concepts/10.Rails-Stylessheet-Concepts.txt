@@ -6,10 +6,25 @@ Add Via Rails Templating Setup
 - its the way of creating template based rails setup for different css framework
 - available setups are:
   
+  # CSS Bundler Setup
+
     $ rails new application_name --css=bootsrtap   # for bootstrap setup
     $ rails new application_name --css=tailwind    # for tailwind setup
     $ rails new application_name --css=postcss     # for postcss setup
+    $ rails new application_name --css boostrap    # for boostrap setup
 
+  # JS Bundler Setup
+
+    $ rails new application_name --javascript esbuild  # for javascript esbuild 1
+
+
+  # Compile Assets
+    
+    $ rails assets:precompile
+
+  # Delete Compiled Assets
+
+    $ rails assets:cloober
 
 
 
@@ -83,8 +98,10 @@ Add Via Direct Stylesheet Added
 -------------------------------
 - directly added the style files into the application/assets/stylesheets/application.css
 - create a css file - user.css and add the file to template base file via 
+    
     <%= stylesheet_link_tag 'file_name'  %>   # loading via adding the stylesheet to the template
-
+- Disadvantage:
+  1. Cache Issue
 
 
 Add Via Public Folder Setup
@@ -95,7 +112,8 @@ Add Via Public Folder Setup
         - css/styles.css
         - js/script.js
 
-
+- disadvantage:
+  1.Cache Issue
 
 
 Add Via Gems Setup
@@ -161,5 +179,4 @@ c. Setup SCSS(Plain No Framework)
   @import "user"
   @import "posts"
 
-  
 
