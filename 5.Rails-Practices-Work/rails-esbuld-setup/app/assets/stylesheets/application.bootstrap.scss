@@ -1,0 +1,51 @@
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons';
+
+
+/* import all files */
+@import "shared/base";
+@import "shared/responsive";
+@import "shared/utility";
+@import "shared/navbar";
+@import "shared/carousel";
+@import "shared/button";
+@import "shared/footer";
+@import "shared/form";
+@import "shared/service";
+@import "shared/contact";
+@import "shared/accomplished";
+
+
+/* Add your custom styles below */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f7f7f7;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+
+/* Customize Bootstrap variables if needed */
+$primary: #3d2ee8;
+$secondary: #00b4cf;
+$success: #28a745;
+$danger: #dc3545;
+$warning: #ffc107;
+$info: #17a2b8;
+$light: #f8f9fa;
+$dark: #343a40;
+$font-family-base: 'Montserrat', sans-serif;
+$font-size-base: 16px;
+$btn-border-radius: 0.25rem;
+
+/* Example of overriding Bootstrap button styles */
+.btn-primary {
+  background-color: $primary;
+  border-color: $primary;
+    &:hover {
+        background-color: darken($primary, 10%);
+        border-color: darken($primary, 10%);
+    }
+}

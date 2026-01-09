@@ -1,0 +1,25 @@
+current directory: /home/jaber/Documents/Ruby-On-Rails-Framework-Learning-Materials/rails-esbuld-setup/vendor/bundle/ruby/3.2.0/gems/bindex-0.8.1/ext/skiptrace
+/usr/bin/ruby -I/usr/share/rubygems extconf.rb
+creating Makefile
+
+current directory: /home/jaber/Documents/Ruby-On-Rails-Framework-Learning-Materials/rails-esbuld-setup/vendor/bundle/ruby/3.2.0/gems/bindex-0.8.1/ext/skiptrace
+make DESTDIR\= sitearchdir\=./.gem.20260109-3968208-s4p2f1 sitelibdir\=./.gem.20260109-3968208-s4p2f1 clean
+rm -f 
+rm -fr cruby.so false cruby.o *.bak mkmf.log .*.time
+
+current directory: /home/jaber/Documents/Ruby-On-Rails-Framework-Learning-Materials/rails-esbuld-setup/vendor/bundle/ruby/3.2.0/gems/bindex-0.8.1/ext/skiptrace
+make DESTDIR\= sitearchdir\=./.gem.20260109-3968208-s4p2f1 sitelibdir\=./.gem.20260109-3968208-s4p2f1
+gcc -I. -I/usr/include -I/usr/include/ruby/backward -I/usr/include -I.   -fPIC -O2 -flto=auto -ffat-lto-objects -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1   -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -Wall -m64 -o cruby.o -c cruby.c
+rm -f cruby.so
+gcc -shared -o cruby.so cruby.o -L. -L/usr/lib64 -L. -Wl,-z,relro -Wl,--as-needed  -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -Wl,--build-id=sha1 -fstack-protector-strong -rdynamic -Wl,-export-dynamic -Wl,--no-as-needed -Wl,-z,relro -Wl,--as-needed  -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -Wl,--build-id=sha1    -m64  -lruby  -lm -lpthread  -lc
+
+current directory: /home/jaber/Documents/Ruby-On-Rails-Framework-Learning-Materials/rails-esbuld-setup/vendor/bundle/ruby/3.2.0/gems/bindex-0.8.1/ext/skiptrace
+make DESTDIR\= sitearchdir\=./.gem.20260109-3968208-s4p2f1 sitelibdir\=./.gem.20260109-3968208-s4p2f1 install
+/usr/bin/mkdir -p . ./.gem.20260109-3968208-s4p2f1/skiptrace/internal
+exit > .sitearchdir.-.skiptrace.-.internal.time
+/usr/bin/install -c -m 0755 cruby.so ./.gem.20260109-3968208-s4p2f1/skiptrace/internal
+
+current directory: /home/jaber/Documents/Ruby-On-Rails-Framework-Learning-Materials/rails-esbuld-setup/vendor/bundle/ruby/3.2.0/gems/bindex-0.8.1/ext/skiptrace
+make DESTDIR\= sitearchdir\=./.gem.20260109-3968208-s4p2f1 sitelibdir\=./.gem.20260109-3968208-s4p2f1 clean
+rm -f 
+rm -fr cruby.so false cruby.o *.bak mkmf.log .*.time
