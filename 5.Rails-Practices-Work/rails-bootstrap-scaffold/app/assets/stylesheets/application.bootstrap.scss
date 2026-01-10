@@ -3,3 +3,24 @@
 
 
 
+/* import all files */
+@import "shared/layouts/base";
+@import "shared/layouts/responsive";
+@import "shared/layouts/utility";
+@import "shared/layouts/navbar";
+@import "shared/layouts/carousel";
+@import "shared/layouts/button";
+@import "shared/layouts/footer";
+@import "shared/layouts/form";
+
+
+/* import page specific files */
+@import "shared/pages/service";
+@import "shared/pages/contact";
+@import "shared/pages/accomplished";
+
+
+/* lib/assets/stylesheets/shared files */
+@import "shared/privacy";
+
+
