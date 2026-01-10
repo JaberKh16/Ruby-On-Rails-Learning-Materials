@@ -26,6 +26,10 @@
   <body>
     <%= render "layouts/partials/navbar" %>
       <%= yield %>
+
+      <%# render the notice and alert partials %>
+      <%= render "layouts/partials/flash_messages" %>
+
     <%= render "layouts/partials/footer" %>
   </body>
 </html>

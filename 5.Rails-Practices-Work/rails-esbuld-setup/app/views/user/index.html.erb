@@ -1,0 +1,87 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="format-header mb-3 flex justify-around items-center">
+        <h3 class="text-primary">Users List</h3>
+        <%= link_to "Add User", user_new_path, method: :get, class: "btn btn-success text-white" %>
+
+
+        <%# search box %>
+        <div class="float-end">
+          <%= render 'search' %>
+        </div>
+        
+      </div>
+
+
+    <%# search results table %>
+    <% if params[:q].present? %>
+        <p class="text-muted">
+            Showing results for: <strong><%= params[:q] %></strong>
+        </p>
+    <% end %>
+    <% if @users.empty? %>
+        <div class="alert alert-warning">
+            No users found.
+        </div>
+    <% end %>
+
+    <table class="table table-hover table-striped table-responsive">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Active</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% if @users.present? %>
+            <% @users.each_with_index do |user, index| %>
+              <tr>
+                <th scope="row"><%= index + 1 %></th>
+                <td><%= user.name %></td>
+                <td><%= user.email %></td>
+                <td>
+                    <% if user.is_active %>
+                        <span class="badge bg-success">Active</span>
+                    <% else %>
+                        <span class="badge bg-secondary">Inactive</span>
+                    <% end %>
+                </td>
+                <td>
+                    <%# action links button in text %>
+                    <%# link_to 'Show', user_show_path(user), class: "btn btn-info btn-sm text-white me-2" %>
+                    <%# link_to 'Edit', user_edit_path(user), class: "btn btn-warning btn-sm me-2" %>
+                    <%# link_to 'Delete', user_delete_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
+
+                    <%# action links button with icons %>
+                    <%= link_to user_show_path(user), class: "btn btn-info btn-sm text-white me-2" do %>
+                        <i class="bi bi-eye-fill me-1"></i> Show
+                    <% end %>
+
+                    <%= link_to user_edit_path(user), class: "btn btn-warning btn-sm me-2 text-dark" do %>
+                        <i class="bi bi-pencil-square me-1"></i> Edit
+                    <% end %>
+
+                    <%= link_to user_delete_path(user), 
+                            method: :delete, 
+                            data: { confirm: 'Are you sure?' }, 
+                            class: "btn btn-danger btn-sm" do %>
+                        <i class="bi bi-trash-fill me-1"></i> Delete
+                    <% end %>
+                </td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="4" class="text-center text-danger">No Records Available</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
