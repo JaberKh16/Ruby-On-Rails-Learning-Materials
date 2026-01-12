@@ -2,7 +2,7 @@ Rails Controller Based Concepts Learning
 ========================================
 
 1. command to create a controller
-    $ rails g controller Products index --skip-routes
+    $ rails g controller Products index --skip-routes  # skip the routes and creates a products_controller with function index
 
 2. base controller functions
 

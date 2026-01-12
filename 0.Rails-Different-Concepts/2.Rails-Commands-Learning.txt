@@ -1,47 +1,90 @@
 Rails Commands Learning Materials
 =================================
+1. Commands To Create Rails Model, Controller
+    a. To Create A Model
+        $ bin/rails generate model Product name:string price:decimal  # Product Model with column:type column:type
+        or.
+        $ rails g model Product name:string price:decimal
 
-1. To Create A Model
+        this command tells Rails to generate a model named Product which has a name column and
+        type of string in the database and creates this -
 
-    $ bin/rails generate model Product name:string # Product Model with column:type
+            invoke  active_record
+            create    db/migrate/20240426151900_create_products.rb
+            create    app/models/product.rb
+            invoke    test_unit
+            create      test/models/product_test.rb
+            create      test/fixtures/products.yml
 
-    this command tells Rails to generate a model named Product which has a name column and
-    type of string in the database and creates this -
+            migration file
+            --------------
+            # db/migrate/<timestamp>_create_products.rb
+            class CreateProducts < ActiveRecord::Migration[8.1]
+                def change
+                    create_table :products do |t|
+                    t.string :name
 
-        invoke  active_record
-        create    db/migrate/20240426151900_create_products.rb
-        create    app/models/product.rb
-        invoke    test_unit
-        create      test/models/product_test.rb
-        create      test/fixtures/products.yml
-
-        migration file
-        --------------
-        # db/migrate/<timestamp>_create_products.rb
-        class CreateProducts < ActiveRecord::Migration[8.1]
-            def change
-                create_table :products do |t|
-                t.string :name
-
-                t.timestamps
+                    t.timestamps
+                    end
                 end
             end
-        end
 
-        model file
-        ----------
-        # app/models/product.rb
-        class Product < ApplicationRecord
-        end
+            model file
+            ----------
+            # app/models/product.rb
+            class Product < ApplicationRecord
+            end
+
+    b. To create a controller
+        $ rails g controller product index show    # to create a products_controller with index show functions
+
+    c. To create a migration
+        a. generate a migrattion
+            $ rails generate migration CreateProducts name:string price:decimal description:text
+
+            create the following:
+                create_table :products do |t|
+                  t.string :name
+                  t.decimal :price
+                  t.text :description
+                  t.timestamps
+                end
+        b. add a column in migration
+            $ rails generate migration AddFieldsToProducts stock:integer sku:string
+            generates the following:
+                add_column :products, :stock, :integer
+                add_column :products, :sku, :string
+
+        c. remove a column in migration
+            $ rails generate migration RemoveStockFromProducts stock:integer
+
+        d. rename a column in migration
+            $ rails generate migration RenamePriceToUnitPriceInProducts
+            generates the following:
+                rename_column :products, :price, :unit_price
+
+        e. change a column type in migration
+            $ rails generate migration ChangePriceTypeInProducts
+            generates the following:
+                change_column :products, :price, :float
 
 
-2. Running The Migration
+2. Migration Commands:
+    $ bin/rails db:migrate              # perform a migration
+    $ bin/rails db:migrate:redo         # to perform redo migration
+    $ bin/rails db:migrate:status       # to see the migrate status
+    $ bin/rails db:migrate:rollback     # to perform the rollback
+    $ bin/rails db:reset                # to perform drops + creates + migrates
 
-    $ bin/rails db:migrate  # perform a migration
+3. To See Routes
+    $ rails routes     # list all the available routes
+    $ rake routes      # list all the available routes old version command
 
-3. Check Information In The Console
+    to see in the browser use the following url
+        localhost:3000/pages/routes     # list all available routes in browser
+
+4. Check Information In The Console
     i. go to the console
-
         $ bin/rails console     # logged into:  store(dev)>
         store(dev)> Rails.version         # shows the version
         store(dev)> Product.column_names  # shows all columns name => ['col1', 'col2', ..., 'coln']
@@ -61,11 +104,7 @@ Rails Commands Learning Materials
         # to perform manual reload
         store(dev)> reload!
 
-
-
-
-
-4. ActiveRecord Queries
+5. ActiveRecord Queries
     1. object.save     # perform trasaction of insert
     2. object.create() # perform transaction o insert
     3. Class.all       # perform transaction of select
@@ -133,7 +172,7 @@ Rails Commands Learning Materials
         => #<Product:0x0000000125813d48 id: 1, name: "T-Shirt", created_at: "2024-11-09 22:39:38.498730000 +0000", updated_at: "2024-11-09 22:39:38.498730000 +0000">
 
 
-5. Model Based Action
+6. Model Based Action
     1. validation
         class Product < ActiveRecord
             validates :name, presence:true   # set name as required field
