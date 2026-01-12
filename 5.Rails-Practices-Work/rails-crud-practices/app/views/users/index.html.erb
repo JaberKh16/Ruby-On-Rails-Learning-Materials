@@ -1,0 +1,56 @@
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Users</h3>
+    <%= link_to "Create User", new_user_path, class: "btn btn-primary" %>
+  </div>
+
+  <table class="table table-bordered table-striped shadow-sm">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th style="width: 200px;">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          
+          <%# using compact method to get full name %>
+          <%# <td><%= [user.first_name, user.last_name].compact.join(" ") %></td> %>
+
+          
+          <%# using model method full_name to get user's full name %>
+          <td><%= user.full_name %></td>
+          <td><%= user.email %></td>
+          <td>
+            <%# link_to "View", user_path(user), class: "btn btn-sm btn-info text-white" %>
+            <%# link_to "Edit", edit_user_path(user), class: "btn btn-sm btn-warning" %>
+            <%# link_to "Delete", user, method: :delete,
+                  data: { confirm: "Are you sure?" },
+                  class: "btn btn-sm btn-danger" %>
+
+            <%= link_to user_path(user), class: "btn btn-sm btn-info text-white" do %>
+              <i class="bi bi-eye"></i> View
+            <% end %>
+
+            <%= link_to edit_user_path(user), class: "btn btn-sm btn-warning text-dark" do %>
+              <i class="bi bi-pencil-square"></i> Edit
+            <% end %>
+
+            <%= link_to user_path(user),
+                  method: :delete,
+                  data: { confirm: "Are you sure?" },
+                  class: "btn btn-sm btn-danger text-white" do %>
+              <i class="bi bi-trash"></i> Delete
+            <% end %>
+
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

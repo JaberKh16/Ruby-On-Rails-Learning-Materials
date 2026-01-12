@@ -8,3 +8,10 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+
+ .debug-info {
+    margin: 2rem 0;
+    font-size: 0.8rem;
+    color: #888;
+ }

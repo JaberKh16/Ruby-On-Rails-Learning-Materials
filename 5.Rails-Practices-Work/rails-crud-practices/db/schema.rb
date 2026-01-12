@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_27_232522) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_12_120505) do
   create_table "blogs", force: :cascade do |t|
     t.string "attachment"
     t.datetime "created_at", null: false
@@ -45,9 +45,9 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_27_232522) do
     t.datetime "created_at", null: false
     t.string "email"
     t.string "first_name"
-    t.boolean "is_active"
+    t.boolean "is_active", default: true
     t.string "last_name"
-    t.string "password"
+    t.string "password_digest"
     t.datetime "updated_at", null: false
   end
 

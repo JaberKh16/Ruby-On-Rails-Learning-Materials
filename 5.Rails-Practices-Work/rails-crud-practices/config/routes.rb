@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
+  # Sessions (login/logout)
+  get "/login",  to: "sessions#new"
+  post "/login", to: "sessions#create"
+  delete "/logout", to: "sessions#destroy"
+
   
-  get '/blog/index', to: 'blog#index'
+  # define routes for blog resource
+  root 'blog#index'
+
+
   get '/blog/show', to: 'blog#show'
   get '/blog/:id', to:'blog#edit'
   put '/blog/:id', to: 'blog#update'

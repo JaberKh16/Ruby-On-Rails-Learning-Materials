@@ -1,0 +1,7 @@
+<div class="mt-5 debug-info container border rounded p-3 bg-dark bg-opacity-3 text-white">
+    debug: <%= Rails.env %> <br>
+    session id: <%= session[:user_id] %> <br>
+    method: <%= request.method %> <br>
+    model: <%= controller.controller_name %> <br>
+    action: <%= controller.action_name %> <br>
+</div>
