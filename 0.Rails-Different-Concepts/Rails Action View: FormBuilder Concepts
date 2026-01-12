@@ -1,0 +1,177 @@
+Rails Action View: FormBuilder Concepts
+=======================================
+Rails provides form helpers to work with forms to set controls, naming and the attributes.
+Rails Form Basic Structure:
+	<%= form_with do |form| %>
+		form controlls
+	<% end %>
+
+	it generates a html form with the value of method attributes set to post => methd: post
+	and the value of attributes action set to current page => action: '/'
+	<form action="/home" accept-charset="UTF-8" method="post">
+	  <input type="hidden" name="authenticity_token" value="Lz6ILqUEs2CGdDa-oz38TqcqQORavGnbGkG0CQA8zc8peOps-K7sHgFSTPSkBx89pQxh3p5zPIkjoOTiA_UWbQ" autocomplete="off">
+	  Form contents
+	</form>
+
+Form Helpers Different Methods:
+-------------------------------
+<%= form.checkbox :biography %>
+<%= form.label :biography, "Biography" %>
+<%= form.checkbox :romance %>
+<%= form.label :romance, "Romance" %>
+<%= form.checkbox :mystery %>
+<%= form.label :mystery, "Mystery" %>
+<%= form.date_field :born_on %>
+<%= form.time_field :started_at %>
+<%= form.datetime_local_field :graduation_day %>
+<%= form.month_field :birthday_month %>
+<%= form.week_field :birthday_week %>
+<%= form.password_field :password %>
+<%= form.email_field :address %>
+<%= form.telephone_field :phone %>
+<%= form.url_field :homepage %>
+
+
+
+
+Working With Rails Form Helpers
+-------------------------------
+a. A Generic Search Form
+	<%= form_with url: "/search", method: :get do |form| %>
+	  <%= form.label :query, "Search for:" %>
+	  <%= form.search_field :query %>
+	  <%= form.submit "Search" %>
+	<% end %>
+	here lets demonstrate the attributes:
+		form_with  			=> to set up the form helper object
+		url: path  			=> to set the path it will go
+		form.label 			=> to set the form label
+		form.search_field	=> to set the search field
+		form.submit 		=> to set the submit input field button where type="submit"
+		:query 				=> under label :query refers to its attribute for="query"
+		:query 				=> under form.search_field this :query refers to name ="query", id="query"
+
+
+b. Form With Model Object
+	<%= form_with model: @book do |form| %>
+	  <div>
+	    <%= form.label :title %>
+	    <%= form.text_field :title %>
+	  </div>
+	  <div>
+	    <%= form.label :author %>
+	    <%= form.text_field :author %>
+	  </div>
+	  <%= form.submit %>
+	<% end %>
+
+	above generates the following html:
+		<form action="/books" accept-charset="UTF-8" method="post">
+		  <input type="hidden" name="authenticity_token" value="ChwHeyegcpAFDdBvXvDuvbfW7yCA3e8gvhyieai7DhG28C3akh-dyuv-IBittsjPrIjETlQQvQJ91T77QQ8xWA" autocomplete="off">
+		  <div>
+		    <label for="book_title">Title</label>
+		    <input type="text" name="book[title]" id="book_title">
+		  </div>
+		  <div>
+		    <label for="book_author">Author</label>
+		    <input type="text" name="book[author]" id="book_author">
+		  </div>
+		  <input type="submit" name="commit" value="Create Book" data-disable-with="Create Book">
+		</form>
+
+c. Form With Method Object
+	- Supported methods: form_with(url: search_path, method: "method_type")
+
+	<%= form_with url: "/posts/1", method: :patch do |form| %>
+	  <%= form.button "Delete", formmethod: :delete, data: { confirm: "Are you sure?" } %>
+	  <%= form.button "Update" %>
+	<% end %>
+
+	it generates the following:
+	<form accept-charset="UTF-8" action="/posts/1" method="post">
+	  <input name="_method" type="hidden" value="patch" />
+	  <input name="authenticity_token" type="hidden" value="f755bb0ed134b76c432144748a6d4b7a7ddf2b71" />
+	  <!-- ... -->
+
+	  <button type="submit" formmethod="post" name="_method" value="delete" data-confirm="Are you sure?">Delete</button>
+	  <button type="submit" name="button">Update</button>
+	</form>
+
+d. Form Select Box Dropdown
+	- Suppoted Format:
+		1. <%= form.select :city, ["Berlin", "Chicago", "Madrid"] %>							# generates html dropdown having value and text as the given array
+		2. <%= form.select :city, [["Berlin", "BE"], ["Chicago", "CHI"], ["Madrid", "MD"]] %>   # generates html dropdown having value ["BE", "CHI", "MD"] and text as ["Berlin", "Chicago", "Madrid"]
+
+	See the html generated, for format -1, and 2
+	<select name="city" id="city">
+	  <option value="Berlin">Berlin</option>
+	  <option value="Chicago">Chicago</option>
+	  <option value="Madrid">Madrid</option>
+	</select>
+
+	<select name="city" id="city">
+	  <option value="BE">Berlin</option>
+	  <option value="CHI">Chicago</option>
+	  <option value="MD">Madrid</option>
+	</select>
+
+	- Grouping Option Setup
+		<%= form.select :city,
+	      {
+	        "Europe" => [ ["Berlin", "BE"], ["Madrid", "MD"] ],
+	        "North America" => [ ["Chicago", "CHI"] ],
+	      },
+	      selected: "CHI" %>
+	which generates the following:
+		<select name="city" id="city">
+		  <optgroup label="Europe">
+		    <option value="BE">Berlin</option>
+		    <option value="MD">Madrid</option>
+		  </optgroup>
+		  <optgroup label="North America">
+		    <option value="CHI" selected="selected">Chicago</option>
+		  </optgroup>
+		</select>
+
+	- binding with model object
+		@person = Person.new(city: "MD")
+		<%= form_with model: @person do |form| %>
+		  <%= form.select :city, [["Berlin", "BE"], ["Chicago", "CHI"], ["Madrid", "MD"]] %>
+		<% end %>
+		<select name="person[city]" id="person_city">
+		  <option value="BE">Berlin</option>
+		  <option value="CHI">Chicago</option>
+		  <option value="MD" selected="selected">Madrid</option>
+		</select>
+e. Form With File Upload: file_field Helper
+	- see the first example without specifiying the enctype, form helpers- file_field automatically adds that
+	 but if wanted can also manually set that see the second example which manually adds it.
+	- form with enctype="multipart/form-data" attribute
+		<%= form_with model: @person do |form| %>
+		  <%= form.file_field :csv_file %>
+		<% end %>
+		or,
+		<%= form_with url: "/uploads", multipart: true do |form| %>
+		  <%= file_field_tag :csv_file %>
+		<% end %>
+
+		which generates the following:
+		<form enctype="multipart/form-data" action="/people" accept-charset="UTF-8" method="post">
+			<!-- ... -->
+		</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   get "user/search", to: "user#search", as: "user_search"
   
   # signup routes
-  get "signup", to: "users#new"
+  get "signup", to: "users#signup", as: "user_signup"
   post "signup", to: "user#create"
 
 end
