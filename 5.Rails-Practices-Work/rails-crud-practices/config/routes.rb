@@ -17,6 +17,10 @@ Rails.application.routes.draw do
   resources :comments
 
   resources :users
+
+  get '/profile', to: 'users#show', as: :profile
+  delete '/profile/delete', to: 'users#destroy', as: :delete_profile
+  
  
   # Defines the root path route ("/")
   # root "posts#index"

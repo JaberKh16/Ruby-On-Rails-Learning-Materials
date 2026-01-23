@@ -9,10 +9,16 @@ class User < ApplicationRecord
     has_secure_password  # adds methods to set and authenticate against a BCrypt password.
 
 
-
     # default setup for is_active and age
     after_initialize :set_defaults, if: :new_record?
 
+    # set the default role for user
+    before_validation :set_default_role, on: :create
+
+    # associations
+    belongs_to :role
+    # has_many :blogs, dependent: :destroy
+    # has_many :comments, dependent: :destroy
  
 
     # validation rules
@@ -59,6 +65,12 @@ class User < ApplicationRecord
     def set_defaults
         self.is_active = true if is_active.nil?
         self.age = nil if age.nil?
+    end
+
+    # set default role
+    private
+    def set_default_role
+        self.role ||= Role.find_by(name: 'user')
     end
 
     # # setter for password

@@ -1,3 +1,4 @@
 class Role < ApplicationRecord
-  belongs_to :users
+  # associations
+  has_many :users, dependent: :nullify
 end

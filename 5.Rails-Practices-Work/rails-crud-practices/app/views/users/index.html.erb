@@ -20,8 +20,11 @@
           <td><%= user.id %></td>
           
           <%# using compact method to get full name %>
-          <%# <td><%= [user.first_name, user.last_name].compact.join(" ") %></td> %>
-
+          <!--
+          <td>
+            <%# [user.first_name, user.last_name].compact.join(" ") %>
+          </td> 
+          -->
           
           <%# using model method full_name to get user's full name %>
           <td><%= user.full_name %></td>

@@ -21,6 +21,9 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
 
+    <%# Includes all javascript files in app/assets/javascripts %>
+    <%= javascript_include_tag "application", type:"module", "data-turbo-track": "reload", defer: true %>
+
     <%# icnlude boostrap library cdn %>
     <!-- Bootstrap CSS -->
     <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_12_120505) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_23_090043) do
   create_table "blogs", force: :cascade do |t|
     t.string "attachment"
     t.datetime "created_at", null: false
@@ -34,10 +34,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_12_120505) do
 
   create_table "roles", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "role_name"
+    t.string "name"
     t.datetime "updated_at", null: false
-    t.integer "users_id", null: false
-    t.index ["users_id"], name: "index_roles_on_users_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -48,9 +46,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_12_120505) do
     t.boolean "is_active", default: true
     t.string "last_name"
     t.string "password_digest"
+    t.integer "role_id", null: false
     t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_users_on_role_id"
   end
 
   add_foreign_key "blogs", "users"
-  add_foreign_key "roles", "users", column: "users_id"
+  add_foreign_key "users", "roles"
 end
